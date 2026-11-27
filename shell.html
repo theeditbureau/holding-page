@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Private preview</title>
+<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5eee9;font-family:Georgia,serif;color:#671112}form{text-align:center;padding:24px;max-width:320px}h1{font-weight:400;font-size:22px;letter-spacing:.08em}p{font:13px/1.5 sans-serif;color:#3a2a2a}input{width:100%;box-sizing:border-box;padding:12px;margin:12px 0;border:1px solid #671112;background:#fff;font-size:16px}button{padding:12px 28px;border:1px solid #671112;background:#671112;color:#f5eee9;font-size:14px;letter-spacing:.1em}#e{color:#a00;min-height:18px}</style></head><body><form id="f"><h1>THE EDIT BUREAU</h1><p>Private preview. Enter the code you were given.</p><input id="p" type="password" autocomplete="off" placeholder="Code" autofocus><div id="e"></div><button>OPEN</button></form>
+<script>
+const S="9asVQ7owi10NCRmzIAgrdw==",I="vg0wz36Sh5gc0SW/",N=["pv-defdda10b36a4954-0.bin", "pv-defdda10b36a4954-1.bin", "pv-defdda10b36a4954-2.bin", "pv-defdda10b36a4954-3.bin", "pv-defdda10b36a4954-4.bin", "pv-defdda10b36a4954-5.bin"];
+const d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+document.getElementById('f').onsubmit=async ev=>{ev.preventDefault();const e=document.getElementById('e');e.textContent='Opening...';
+try{const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(document.getElementById('p').value.trim()),'PBKDF2',false,['deriveKey']);
+const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:d(S),iterations:250000,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+const bs=await Promise.all(N.map(n=>fetch(n+'?v='+I.length).then(r=>r.arrayBuffer())));const cc=new Uint8Array(bs.reduce((a,b)=>a+b.byteLength,0));let o=0;for(const b of bs){cc.set(new Uint8Array(b),o);o+=b.byteLength}const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:d(I)},k,cc);
+const h=await new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'))).text();document.open();document.write(h);document.close();}catch(x){e.textContent='Wrong code.'}};
+</script></body></html>
